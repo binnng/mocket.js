@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
+	<title>Rocket.js demo</title>
+	<script type="text/javascript" src="http://co.baifubao.com/content/mywallet/h5/tools/debug.min.js"></script>
+	<script type="text/javascript">
+	var log = console.log.bind(console);
+	console.log = function(s) {
+		debug.log(s);
+		log(s);
+	};
+	</script>
+
+<!-- 	<script type="text/javascript" src="lib/es5.js"></script>
+	<script type="text/javascript" src="lib/store.js"></script>
+	<script type="text/javascript" src="lib/loadscript.js"></script>
+	<script type="text/javascript" src="mod.js"></script> -->
+
+	<script type="text/javascript" src="mocket.min.js"></script>
+</head>
+<body>
+
+<script type="text/javascript">
+require.resourceMap({
+  "res": {
+    "modules/a.js": {
+      "url": "modules/a1.js"
+    },
+    "modules/b.js": {
+      "url": "modules/b1.js"
+    }
+  }
+});
+</script>
+	
+	<script type="text/javascript">
+		require.config({
+			comboServe: "modules/combo.js"
+		});
+
+		require.async([
+			"modules/a.js",
+			"modules/b.js"
+		], function(a, b) {
+			a.init();
+			b.init();
+		});
+
+
+		// loadScript("https://www.baifubao.com/combo??/static/wise/pkg/auth_aio.0620104.js,/static/wise/component/fastclick/lib/fastclick.6ef7fba.js", function() {
+		// 	console.log("combo loaded");
+		// })
+
+	</script>
+</body>
+</html>
