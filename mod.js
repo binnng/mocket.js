@@ -11,7 +11,9 @@ var require, define;
     var comboSyntax = ["??", ","];
     var comboServe = "//qianbao.baidu.com/combo";
     var storePrefix = "mocket-";
-    var comboStore = true;
+
+    // 只有当明确配置了comboFile为false才置为false
+    var comboFile = false === window.comboFile ? false : true;
 
     // 执行代码片段
     function exec(s) {
@@ -119,7 +121,6 @@ var require, define;
         }
 
         var needMap = {};
-        var needMapArr = [];
         var needURLMap = [];
         var needNum = 0;
         var stores = getStores();
@@ -138,7 +139,6 @@ var require, define;
                 }
 
                 needMap[dep] = true;
-                needMapArr.push(dep);
                 needURLMap.push(url);
                 needNum++;
 
@@ -151,7 +151,7 @@ var require, define;
 
         function updateNeed() {
             needURLMap.forEach(function(item) {
-                if (comboStore && (item in stores)) {
+                if (comboFile && (item in stores)) {
                     hasStored.push(item);
                 } else {
                     needLoad.push(item);
@@ -180,7 +180,7 @@ var require, define;
         // 按顺序传递参数执行
         function next() {
             var modules = [];
-            needMapArr.forEach(function(item) {
+            names.forEach(function(item) {
                 modules.push(require(item));
             });
             callback.apply(window, modules);
@@ -200,7 +200,7 @@ var require, define;
     require.config = function(data) {
         data.comboSyntax && (comboSyntax = data.comboSyntax);
         data.comboServe && (comboServe = data.comboServe);
-        /boolean/i.test(typeof data.comboStore) && (comboStore = data.comboStore);
+        /boolean/i.test(typeof data.comboFile) && (comboFile = data.comboFile);
     };
 
     define.amd = {
