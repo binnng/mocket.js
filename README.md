@@ -45,3 +45,10 @@ require.config({
 	readStore: false
 });
 ```
+
+### readStore
+
+有以下几种方式屏蔽读取localStorage，便于开发
+
+* window.readStore = false
+* URL中存在参数readStore=false
