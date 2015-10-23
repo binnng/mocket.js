@@ -25,8 +25,8 @@ require.resourceMap({
 
 ```javascript
 require.async([
-	"a.js",
-	"b.js"
+	"modules/a.js",
+	"modules/b.js"
 ], function(a,b) {
 	a.init();
 	b.init();
@@ -41,7 +41,7 @@ require.config({
 	comboServe: "http://www.a.com/combo",
 	comboSyntax: ["??", ","],
 
-	// 是否从存储中读取，开发时置false
+	// 是否从存储中读取，开发时置true
 	ignoreStore: true,
 
 	// 最大combo资源数
