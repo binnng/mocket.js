@@ -12,8 +12,13 @@ var require, define;
     var comboServe = "//wallet.baidu.com/combo";
     var storePrefix = "mocket-";
 
-    // 只有当明确配置了readStore为false才置为false
-    var readStore = false === window.readStore ? false : true;
+    // 屏蔽读取storage，便于开发
+    // 1) window.readStore = false
+    // 2) URL中readStore=false
+    var readStore = (
+        false === window.readStore ||
+        (location.search || "").match(/readStore=false/)
+    ) ? false : true;
 
     // 执行代码片段
     function exec(s) {
