@@ -1,6 +1,6 @@
 var require, define;
 
-(function(self) {
+(function(window) {
     var head = document.getElementsByTagName('head')[0];
     var loadingMap = {};
     var factoryMap = {};
@@ -9,11 +9,11 @@ var require, define;
     var pkgMap;
     var isStorageSupport = Store.isSupport;
     var comboSyntax = ["??", ","];
-    var comboServe = "//qianbao.baidu.com/combo";
+    var comboServe = "//wallet.baidu.com/combo";
     var storePrefix = "mocket-";
 
-    // 只有当明确配置了comboFile为false才置为false
-    var comboFile = false === window.comboFile ? false : true;
+    // 只有当明确配置了readStore为false才置为false
+    var readStore = false === window.readStore ? false : true;
 
     // 执行代码片段
     function exec(s) {
@@ -32,7 +32,7 @@ var require, define;
         return stores;
     }
 
-    // 获取combo的url
+    // 拼接combo的url
     function getComboURI(requires) {
         var start = comboSyntax[0]; // ??
         var sep = comboSyntax[1]; // ,
@@ -45,6 +45,7 @@ var require, define;
         return "define('" + id + "'," + factory.toString() + ");";
     };
 
+    // 通过静态资源id从resMap中获取实际url
     function getStaticURI(id) {
         var res = resMap[id] || {};
         var url;
@@ -151,7 +152,7 @@ var require, define;
 
         function updateNeed() {
             needURLMap.forEach(function(item) {
-                if (comboFile && (item in stores)) {
+                if (readStore && (item in stores)) {
                     hasStored.push(item);
                 } else {
                     needLoad.push(item);
@@ -162,8 +163,8 @@ var require, define;
         findNeed(names);
         updateNeed();
 
-        // 保险延迟
         if (hasStored.length) {
+            // 保险延迟
             setTimeout(function() {
                 hasStored.forEach(function(i) {
                     exec(stores[i]);
@@ -174,7 +175,7 @@ var require, define;
         if (needLoad.length) {
             loadScript(getComboURI(needLoad), next);
         } else {
-            setTimeout(next, 10);
+            setTimeout(next, 1);
         }
 
         // 按顺序传递参数执行
@@ -194,13 +195,13 @@ var require, define;
     };
 
     require.alias = function(id) {
-        return id
+        return id;
     };
 
     require.config = function(data) {
         data.comboSyntax && (comboSyntax = data.comboSyntax);
         data.comboServe && (comboServe = data.comboServe);
-        /boolean/i.test(typeof data.comboFile) && (comboFile = data.comboFile);
+        /boolean/i.test(typeof data.readStore) && (readStore = data.readStore);
     };
 
     define.amd = {
@@ -211,4 +212,4 @@ var require, define;
     window.require = require;
     window.define = define;
 
-})(this);
+})(window);

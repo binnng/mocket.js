@@ -5,7 +5,7 @@
 ## API
 ```javascript
 
-require([
+require.async([
 	"a.js",
 	"b.js"
 ], function(a,b) {
@@ -18,6 +18,9 @@ require([
 ```javascript
 require.config({
 	comboServe: "http://www.a.com/combo",
-	comboSyntax: ["??", ","]
+	comboSyntax: ["??", ","],
+
+	// 是否从存储中读取，开发时置false
+	readStore: false
 });
 ```
