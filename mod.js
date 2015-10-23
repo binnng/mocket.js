@@ -11,6 +11,7 @@ var require, define;
     var comboSyntax = ["??", ","];
     var comboServe = "//wallet.baidu.com/combo";
     var storePrefix = "mocket-";
+    var search = location.search || "";
 
     // 最大combo资源数，默认10个
     var maxComboNum = 10;
@@ -20,8 +21,10 @@ var require, define;
     // 2) URL中readStore=false
     var readStore = (
         false === window.readStore ||
-        (location.search || "").match(/readStore=false/)
+        search.match(/readStore=false/)
     ) ? false : true;
+
+    var isClearStore = search.match(/clearStore/);
 
     // 执行代码片段
     function exec(s) {
@@ -69,6 +72,10 @@ var require, define;
         return url;
     };
 
+    function clearStore() {
+        Store.clear(storePrefix);
+    };
+
     define = function(id, factory) {
         factoryMap[id] = factory;
 
@@ -80,7 +87,7 @@ var require, define;
             delete loadingMap[id];
         }
 
-        if (isStorageSupport) {
+        if (!isClearStore && isStorageSupport) {
             var storeId = storePrefix + getStaticURI(id);
 
             if (!Store(storeId)) {
@@ -230,6 +237,10 @@ var require, define;
         'jQuery': true,
         'version': '1.0.0'
     };
+
+    if (isClearStore) {
+        clearStore();
+    }
 
     window.require = require;
     window.define = define;
