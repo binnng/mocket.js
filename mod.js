@@ -17,13 +17,9 @@ var require, define;
     var maxComboNum = 10;
 
     // 屏蔽读取storage，便于开发
-    // 1) window.readStore = false
-    // 2) URL中readStore=false
-    var readStore = (
-        false === window.readStore ||
-        search.match(/readStore=false/)
-    ) ? false : true;
-
+    // 1) window.ignoreStore = true
+    // 2) URL中有ignoreStore
+    var ignoreStore = window.ignoreStore || search.match(/ignoreStore/);
     var isClearStore = search.match(/clearStore/);
 
     // 执行代码片段
@@ -184,7 +180,7 @@ var require, define;
 
         function updateStore() {
             needURLMap.forEach(function(item) {
-                if (readStore && (item in stores)) {
+                if (!ignoreStore && (item in stores)) {
                     hasStored.push(item);
                 } else {
                     needLoad.push(item);
@@ -229,7 +225,7 @@ var require, define;
     require.config = function(data) {
         data.comboSyntax && (comboSyntax = data.comboSyntax);
         data.comboServe && (comboServe = data.comboServe);
-        /boolean/i.test(typeof data.readStore) && (readStore = data.readStore);
+        /boolean/i.test(typeof data.ignoreStore) && (ignoreStore = data.ignoreStore);
         data.maxComboNum && (maxComboNum = data.maxComboNum);
     };
 

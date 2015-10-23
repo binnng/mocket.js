@@ -42,7 +42,7 @@ require.config({
 	comboSyntax: ["??", ","],
 
 	// 是否从存储中读取，开发时置false
-	readStore: false,
+	ignoreStore: true,
 
 	// 最大combo资源数
 	maxComboNum: 50
@@ -53,5 +53,5 @@ require.config({
 
 有以下几种方式屏蔽读取localStorage，便于开发
 
-* window.readStore = false
-* URL中存在参数readStore=false
+* window.ignoreStore = true
+* URL中存在参数ignoreStore
