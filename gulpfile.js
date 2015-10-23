@@ -8,6 +8,7 @@ gulp.task("build", function() {
 		"lib/es5.js",
 		"lib/store.js",
 		"lib/loadscript.js",
+		"lib/group_array.js",
 		"mod.js"
 	])
 	.pipe(concat("mocket.min.js"))

@@ -42,7 +42,10 @@ require.config({
 	comboSyntax: ["??", ","],
 
 	// 是否从存储中读取，开发时置false
-	readStore: false
+	readStore: false,
+
+	// 最大combo资源数
+	maxComboNum: 50
 });
 ```
 

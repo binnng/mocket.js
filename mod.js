@@ -12,6 +12,9 @@ var require, define;
     var comboServe = "//wallet.baidu.com/combo";
     var storePrefix = "mocket-";
 
+    // 最大combo资源数，默认10个
+    var maxComboNum = 10;
+
     // 屏蔽读取storage，便于开发
     // 1) window.readStore = false
     // 2) URL中readStore=false
@@ -128,10 +131,28 @@ var require, define;
 
         var needMap = {};
         var needURLMap = [];
-        var needNum = 0;
         var stores = getStores();
         var needLoad = [];
+        var needNum = 0;
         var hasStored = [];
+
+        findNeed(names);
+        updateStore();
+
+        if (hasStored.length) {
+            // 保险延迟
+            setTimeout(function() {
+                hasStored.forEach(function(i) {
+                    exec(stores[i]);
+                })
+            }, 0);
+        }
+
+        if (needLoad.length) {
+            groupNeed();
+        } else {
+            setTimeout(next, 1);
+        }
 
         function findNeed(depArr) {
             for (var i = depArr.length - 1; i >= 0; --i) {
@@ -146,7 +167,6 @@ var require, define;
 
                 needMap[dep] = true;
                 needURLMap.push(url);
-                needNum++;
 
                 var child = resMap[dep];
                 if (child && child.deps) {
@@ -155,7 +175,7 @@ var require, define;
             }
         }
 
-        function updateNeed() {
+        function updateStore() {
             needURLMap.forEach(function(item) {
                 if (readStore && (item in stores)) {
                     hasStored.push(item);
@@ -165,22 +185,18 @@ var require, define;
             });
         }
 
-        findNeed(names);
-        updateNeed();
-
-        if (hasStored.length) {
-            // 保险延迟
-            setTimeout(function() {
-                hasStored.forEach(function(i) {
-                    exec(stores[i]);
-                })
-            }, 0);
+        function updateNeed() {
+            if (0 == --needNum) {
+                next();
+            }
         }
 
-        if (needLoad.length) {
-            loadScript(getComboURI(needLoad), next);
-        } else {
-            setTimeout(next, 1);
+        function groupNeed() {
+            var group = groupArray(needLoad, maxComboNum);
+            for(var i = group.length - 1; i >= 0; --i) {
+                needNum++;
+                loadScript(getComboURI(group[i]), updateNeed);
+            }
         }
 
         // 按顺序传递参数执行
@@ -207,6 +223,7 @@ var require, define;
         data.comboSyntax && (comboSyntax = data.comboSyntax);
         data.comboServe && (comboServe = data.comboServe);
         /boolean/i.test(typeof data.readStore) && (readStore = data.readStore);
+        data.maxComboNum && (maxComboNum = data.maxComboNum);
     };
 
     define.amd = {

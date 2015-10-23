@@ -13,12 +13,13 @@
 	};
 	</script>
 
-	<!-- <script type="text/javascript" src="lib/es5.js"></script>
+	<script type="text/javascript" src="lib/es5.js"></script>
 	<script type="text/javascript" src="lib/store.js"></script>
 	<script type="text/javascript" src="lib/loadscript.js"></script>
-	<script type="text/javascript" src="mod.js"></script> -->
+	<script type="text/javascript" src="lib/group_array.js"></script>
+	<script type="text/javascript" src="mod.js"></script>
 
-	<script type="text/javascript" src="mocket.min.js"></script>
+	<!-- <script type="text/javascript" src="mocket.min.js"></script> -->
 </head>
 <body>
 
@@ -37,7 +38,9 @@ require.resourceMap({
 	
 <script type="text/javascript">
 	require.config({
-		comboServe: "test/combo.js"
+		comboServe: "test/combo.js",
+		maxComboNum: 10,
+		readStore: false
 	});
 
 	require.async([
