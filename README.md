@@ -49,9 +49,14 @@ require.config({
 });
 ```
 
-### readStore
+### ignoreStore
 
 有以下几种方式屏蔽读取localStorage，便于开发
 
 * window.ignoreStore = true
 * URL中存在参数ignoreStore
+
+
+### clearStore
+
+当URL中存在参数clearStore，可以删除localStorage
