@@ -9,7 +9,7 @@ var require, define;
     var pkgMap;
     var isStorageSupport = Store.isSupport;
     var comboSyntax = ["??", ","];
-    var comboServe = "//wallet.baidu.com/combo";
+    var comboServe = "/combo";
     var storePrefix = "mocket-";
     var search = location.search || "";
 
@@ -196,9 +196,11 @@ var require, define;
 
         function groupNeed() {
             var group = groupArray(needLoad, maxComboNum);
+            var files;
             for(var i = group.length - 1; i >= 0; --i) {
                 needNum++;
-                loadScript(getComboURI(group[i]), updateNeed);
+                files = group[i];
+                loadScript(files.length > 1 ? getComboURI(files) : files[0], updateNeed);
             }
         }
 
