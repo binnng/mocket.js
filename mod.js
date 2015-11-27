@@ -138,6 +138,7 @@ var require, define;
         var needLoad = [];
         var needNum = 0;
         var hasStored = [];
+        var aioFile = resMap.aio && resMap.aio.url;
 
         findNeed(names);
         updateStore();
@@ -151,10 +152,16 @@ var require, define;
             }, 0);
         }
 
-        if (needLoad.length) {
-            groupNeed();
+        // 没有任何存储，并且配置了aio时，加载aio文件
+        if (!hasStored.length && aioFile) {
+            loadScript(aioFile, next);
+        // 继续走combo
         } else {
-            setTimeout(next, 1);
+            if (needLoad.length) {
+                groupNeed();
+            } else {
+                setTimeout(next, 1);
+            }
         }
 
         function findNeed(depArr) {

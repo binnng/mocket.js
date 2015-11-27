@@ -31,6 +31,12 @@ require.resourceMap({
     },
     "modules/b.js": {
       "url": "test/b.89d98ie.js"
+    },
+    "modules/c.js": {
+      "url": "test/c.89d98id.js"
+    },
+    "aio": {
+    	"url": "test/aio.78dde89.js"
     }
   }
 });
@@ -45,10 +51,12 @@ require.resourceMap({
 
 	require.async([
 		"modules/a.js",
-		"modules/b.js"
-	], function(a, b) {
+		"modules/b.js",
+		"modules/c.js"
+	], function(a, b, c) {
 		a.init();
 		b.init();
+		c.init();
 	});
 </script>
 </body>
