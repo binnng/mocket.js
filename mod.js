@@ -55,17 +55,7 @@ var require, define;
     // 通过静态资源id从resMap中获取实际url
     function getStaticURI(id) {
         var res = (resMap || {})[id] || {};
-        var url;
-
-        var pkgID = res['pkg'];
-        if (pkgID) {
-            url = pkgMap[pkgID]['url'];
-        }
-        else {
-            url = res['url'] || id;
-        }
-
-        return url;
+        return res['url'] || id;
     };
 
     function clearStore() {
